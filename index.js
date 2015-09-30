@@ -20,7 +20,16 @@ elixir.extend('behat', function(baseDir, options, watchList) {
 	baseDir = baseDir || 'tests/features';
 	options = _.extend( { notify: true } , options);
 
-	gulp.task('behat', function() {
+	// default watch files
+	var tddList = [
+		baseDir + '/**/*.feature',
+		baseDir + '/**/*Context.php'
+	];
+
+	// merge in users watch files (and remove duplicates if they exist)
+	tddList = _.union(tddList, watchList);
+
+	new elixir.Task('behat', function() {
 		gulp.src('behat.yml')
 			.pipe(behat('', options))
 			.on('error', notify.onError({
@@ -33,20 +42,7 @@ elixir.extend('behat', function(baseDir, options, watchList) {
 				message: 'Your Behat tests passed!',
 				icon: __dirname + '/../laravel-elixir/icons/pass.png'
 			}));
-	});
-
-	this.queueTask('behat');
-
-	// default watch files
-	var tddList = [
-		baseDir + '/**/*.feature',
-		baseDir + '/**/*Context.php'
-	];
-
-	// merge in users watch files (and remove duplicates if they exist)
-	tddList = _.union(tddList, watchList);
-
-	this.registerWatcher('behat', tddList, 'tdd');
+	})watch(tddList, 'tdd');
 
 });
 
