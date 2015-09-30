@@ -42,7 +42,7 @@ elixir.extend('behat', function(baseDir, options, watchList) {
 				message: 'Your Behat tests passed!',
 				icon: __dirname + '/../laravel-elixir/icons/pass.png'
 			}));
-	})watch(tddList, 'tdd');
+	}).watch(tddList, 'tdd');
 
 });
 
